@@ -1,5 +1,5 @@
 Structure:
-This project conatains two application:
+This project contains two application:
 - server app (inside of './server' folder)
 - client app (inside of './client' folder)
 
@@ -9,7 +9,7 @@ Steps:
 1. Download and install node here - https://nodejs.org/en/ (if needed)
 2. Open project using VSC or some other code editor
 3. Run command in terminal (inside of this folder): npm run setup (it should install all dependencies)
-4. Run commant in terminal (inside of this folder): npm run start_server (it should start server app)
+4. Run command in terminal (inside of this folder): npm run start_server (it should start server app)
 5. Open additional terminal and run command: npm run start_client (it should start client app)
 
 API
@@ -86,7 +86,7 @@ response: [
     }
     ...
 ]
-+ response conains additional information: totalPages, total and page
++ response contains additional information: totalPages, total and page
 
 DELETE POST
 url: MAIN_URL + 'post/{id}'
