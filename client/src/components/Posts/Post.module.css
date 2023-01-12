@@ -1,0 +1,47 @@
+.post {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.post:not(:last-child) {
+  border-bottom: 1px solid lightblue;
+  margin-bottom: 2em;
+}
+
+.postHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.postTitle {
+  font-size: 2.4em;
+  margin-right: 1em;
+}
+
+.postAuthor {
+  font-size: 1.6em;
+}
+
+.postPicture {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  margin-bottom: 1em;
+}
+
+.postFooter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.postDate {
+  font-size: 1.4em;
+}
+
+.postReactions {
+  display: flex;
+  flex-direction: row;
+}

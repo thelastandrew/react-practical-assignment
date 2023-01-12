@@ -1,0 +1,21 @@
+.reaction {
+  display: flex;
+  flex-direction: row;
+  /* align-items: center; */
+}
+
+.reaction:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.reactionBtn {
+  background-color: transparent;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.reactionCounter {
+  font-size: 2em;
+}
