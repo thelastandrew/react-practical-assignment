@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logout } from '../../store/authReducer';
 import MyButton from '../../UI/MyButton/MyButton';
 import s from './Nav.module.css';
 
-const Nav = () => {
+const Nav = (props) => {
   const handleClick = () => {
-    console.log('logout in progress...');
+    props.logout();
   };
 
   return (
@@ -17,10 +19,15 @@ const Nav = () => {
           <Link to="/about">About</Link>
         </li>
       </ul>
+      <p className={s.username}>{props.username}</p>
       <MyButton onClick={handleClick}>LogOut</MyButton>
     </nav>
   );
 };
 
-export default Nav;
+const mapStateToProps = state => ({
+  username: state.auth.username,
+});
+
+export default connect(mapStateToProps, { logout })(Nav);
 

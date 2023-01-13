@@ -33,7 +33,7 @@ const Post = (props) => {
               </div>
             </div>
           );
-        })
+        }).reverse()
       )}
     </>
   );
