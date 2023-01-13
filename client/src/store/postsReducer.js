@@ -13,7 +13,7 @@ const initialState = {
   totalPosts: 0,
   page: 1,
   totalPages: 0,
-  isFetching: false,
+  isFetching: true,
   errorMsg: '',
 };
 
