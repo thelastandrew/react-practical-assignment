@@ -1,11 +1,15 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { login } from './store/authReducer';
 import PrivateWrapper from './components/PrivateWrapper';
 import NavigateToMain from './components/NavigateToMain';
 import Main from './pages/Main/Main';
 import About from './pages/About';
 import NotFound from './pages/NotFound';
 
-function App() {
+function App(props) {
+  const userName = localStorage.getItem('username') || '';
+  if (!!userName) props.login(userName);
   return (
     <BrowserRouter>
       <Routes>
@@ -20,5 +24,5 @@ function App() {
   );
 }
 
-export default App;
+export default connect(null, { login })(App);
 

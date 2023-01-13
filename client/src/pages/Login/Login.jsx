@@ -18,6 +18,7 @@ const Login = (props) => {
     } else {
       setError(false);
       setUserName('');
+      localStorage.setItem('username', userName);
       props.login(userName);
     }
   };

@@ -6,6 +6,7 @@ import s from './Nav.module.css';
 
 const Nav = (props) => {
   const handleClick = () => {
+    localStorage.removeItem('username');
     props.logout();
   };
 
