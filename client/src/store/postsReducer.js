@@ -8,6 +8,7 @@ const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const ADD_POST = 'ADD_POST';
 const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
 const REMOVE_POST = 'REMOVE_POST';
+const EDIT_POST = 'EDIT_POST';
 
 const initialState = {
   posts: [],
@@ -42,7 +43,12 @@ const postsReducer = (state = initialState, action) => {
       return { ...state, errorMsg: action.payload };
     }
     case REMOVE_POST: {
-      return { ...state, posts: state.posts.filter(p => p.id !== action.payload ) }
+      return { ...state, posts: state.posts.filter(p => p.id !== action.payload ) };
+    }
+    case EDIT_POST: {
+      const postToUpdate = state.posts.findIndex(p => p.id === action.payload.id);
+      state.posts.splice(postToUpdate, 1, action.payload);
+      return { ...state, posts: [...state.posts] };
     }
     default: {
       return state;
@@ -70,6 +76,7 @@ const setErrorMsg = (errorMsg) => ({
   payload: errorMsg,
 });
 const removePost = (id) => ({ type: REMOVE_POST, payload: id });
+const editPost = (updatedPost) => ({ type: EDIT_POST, payload: updatedPost });
 
 export const getPosts = (pageNum) => (dispatch) => {
   dispatch(toggleIsFetching(true));
@@ -105,6 +112,19 @@ export const deletePost = (id) => (dispatch) => {
   postAPI.deletePost(id).then((data) => {
     if (data.success) {
       dispatch(removePost(data.result.id));
+      dispatch(toggleIsFetching(false));
+    } else {
+      dispatch(setErrorMsg(data.result));
+      dispatch(toggleIsFetching(false));
+    }
+  });
+};
+
+export const updatePost = (id, title, likes, dislikes) => (dispatch) => {
+  dispatch(toggleIsFetching(true));
+  postAPI.updatePost(id, title, likes, dislikes).then((data) => {
+    if(data.success) {
+      dispatch(editPost(data.result));
       dispatch(toggleIsFetching(false));
     } else {
       dispatch(setErrorMsg(data.result));

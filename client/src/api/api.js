@@ -19,4 +19,7 @@ export const postAPI = {
 
   deletePost: (id) => API.delete(`${endpoints.post}/${id}`)
     .then(response => response.data),
+
+  updatePost: ( id, title, likes, dislikes) => API.put(`${endpoints.post}/${id}`, { title, likes, dislikes })
+    .then(response => response.data),
 };
