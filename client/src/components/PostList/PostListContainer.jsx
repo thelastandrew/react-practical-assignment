@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import PostAPIContainer from './PostAPIContainer';
+import PostListAPIContainer from './PostListAPIContainer';
 import { getPosts } from '../../store/postsReducer';
 
 const mapStateToProps = state => ({
@@ -10,6 +10,4 @@ const mapStateToProps = state => ({
   isFetching: state.posts.isFetching,
 });
 
-const PostsContainer = connect(mapStateToProps, { getPosts })(PostAPIContainer);
-
-export default PostsContainer;
+export default connect(mapStateToProps, { getPosts })(PostListAPIContainer);

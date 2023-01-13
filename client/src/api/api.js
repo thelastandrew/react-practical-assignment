@@ -16,4 +16,7 @@ export const postAPI = {
 
   createPost: (title, username) => API.post(endpoints.post, { title, username })
     .then(response => response.data),
+
+  deletePost: (id) => API.delete(`${endpoints.post}/${id}`)
+    .then(response => response.data),
 };

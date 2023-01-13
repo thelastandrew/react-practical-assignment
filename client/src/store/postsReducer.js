@@ -7,6 +7,7 @@ const SET_TOTAL_POSTS = 'SET_TOTAL_POSTS';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const ADD_POST = 'ADD_POST';
 const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
+const REMOVE_POST = 'REMOVE_POST';
 
 const initialState = {
   posts: [],
@@ -40,6 +41,9 @@ const postsReducer = (state = initialState, action) => {
     case SET_ERROR_MESSAGE: {
       return { ...state, errorMsg: action.payload };
     }
+    case REMOVE_POST: {
+      return { ...state, posts: state.posts.filter(p => p.id !== action.payload ) }
+    }
     default: {
       return state;
     }
@@ -65,6 +69,7 @@ const setErrorMsg = (errorMsg) => ({
   type: SET_ERROR_MESSAGE,
   payload: errorMsg,
 });
+const removePost = (id) => ({ type: REMOVE_POST, payload: id });
 
 export const getPosts = (pageNum) => (dispatch) => {
   dispatch(toggleIsFetching(true));
@@ -87,6 +92,19 @@ export const createPost = (title, username) => (dispatch) => {
   postAPI.createPost(title, username).then((data) => {
     if (data.success) {
       dispatch(addPost(data.result));
+      dispatch(toggleIsFetching(false));
+    } else {
+      dispatch(setErrorMsg(data.result));
+      dispatch(toggleIsFetching(false));
+    }
+  });
+};
+
+export const deletePost = (id) => (dispatch) => {
+  dispatch(toggleIsFetching(true));
+  postAPI.deletePost(id).then((data) => {
+    if (data.success) {
+      dispatch(removePost(data.result.id));
       dispatch(toggleIsFetching(false));
     } else {
       dispatch(setErrorMsg(data.result));

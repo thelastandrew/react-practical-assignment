@@ -1,14 +1,14 @@
 import { Component } from 'react';
-import Post from './Post';
+import PostList from './PostList';
 
-class PostAPIContainer extends Component {
+class PostListAPIContainer extends Component {
   componentDidMount() {
     this.props.getPosts(this.props.page);
   }
 
   render() {
     return (
-      <Post
+      <PostList
         posts={this.props.posts}
         totalPosts={this.props.totalPosts}
         page={this.props.page}
@@ -19,5 +19,5 @@ class PostAPIContainer extends Component {
   }
 }
 
-export default PostAPIContainer;
+export default PostListAPIContainer;
 

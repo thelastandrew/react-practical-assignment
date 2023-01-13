@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import PostsContainer from '../../components/Posts/PostsContainer';
+import PostListContainer from '../../components/PostList/PostListContainer';
 import Modal from '../../components/Modal/Modal';
 import MyButton from '../../UI/MyButton/MyButton';
 import s from './Main.module.css';
@@ -14,7 +14,7 @@ const Main = () => {
   return (
     <div className={s.mainWrapper}>
       <MyButton onClick={handleClick}>Add new post</MyButton>
-      <PostsContainer />
+      <PostListContainer />
       {isModalActive && <Modal setIsModalActive={setIsModalActive} />}
     </div>
   );
