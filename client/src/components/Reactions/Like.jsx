@@ -11,14 +11,14 @@ const Like = ({ id, title, likes, dislikes, currentUser, updatePost }) => {
   const handleLike = () => {
     if (!isLiked) {
       likes.push(currentUser);
-      updatePost(id, title, likes, dislikes)
+      updatePost(id, title, likes, dislikes);
       setIsLiked(true);
     } else {
-      const newLikes = likes.filter(l => l !== currentUser);
-      updatePost(id, title, newLikes, dislikes)
+      const newLikes = likes.filter((l) => l !== currentUser);
+      updatePost(id, title, newLikes, dislikes);
       setIsLiked(false);
     }
-  }
+  };
 
   const likeList = likes.join('\n');
 
@@ -46,7 +46,7 @@ const Like = ({ id, title, likes, dislikes, currentUser, updatePost }) => {
   );
 };
 
-const mapStateTotProps = state => ({
+const mapStateTotProps = (state) => ({
   currentUser: state.auth.username,
 });
 
