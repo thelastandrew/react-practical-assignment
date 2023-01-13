@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { useState } from 'react';
 import { deletePost } from '../../store/postsReducer';
-import Like from '../../UI/Reactions/Like';
-import Dislike from '../../UI/Reactions/Dislike';
+import Like from '../Reactions/Like';
+import Dislike from '../Reactions/Dislike';
 import MyButton from '../../UI/MyButton/MyButton';
 import ModalEditPost from '../ModalEditPost/ModalEditPost';
 import s from './Post.module.css';
@@ -27,20 +27,38 @@ const Post = (props) => {
         {props.username === props.currentUser && (
           <div className={s.authActions}>
             <MyButton onClick={() => setIsEditPostMode(true)}>Edit</MyButton>
-            <MyButton onClick={() => props.deletePost(props.id)}>Delete</MyButton>
+            <MyButton onClick={() => props.deletePost(props.id)}>
+              Delete
+            </MyButton>
           </div>
         )}
         <div className={s.postReactions}>
-          <Like likes={props.likes} />
-          <Dislike dislikes={props.dislikes} />
+          <Like
+            id={props.id}
+            title={props.title}
+            likes={props.likes}
+            dislikes={props.dislikes}
+          />
+          <Dislike
+            id={props.id}
+            title={props.title}
+            likes={props.likes}
+            dislikes={props.dislikes}
+          />
         </div>
       </div>
-      {isEditPostMode && <ModalEditPost setIsEditPostMode={setIsEditPostMode} postValue={props.title} id={props.id}/>}
+      {isEditPostMode && (
+        <ModalEditPost
+          setIsEditPostMode={setIsEditPostMode}
+          postValue={props.title}
+          id={props.id}
+        />
+      )}
     </div>
   );
 };
 
-const mapStateTotProps = state => ({
+const mapStateTotProps = (state) => ({
   currentUser: state.auth.username,
 });
 
