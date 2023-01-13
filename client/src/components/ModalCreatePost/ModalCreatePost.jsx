@@ -1,21 +1,24 @@
 import { connect } from 'react-redux';
-import { useState } from 'react';
-import { createPost } from '../../store/postsReducer';
+import { useState, useRef } from 'react';
+import { createPost, uploadPostPicture } from '../../store/postsReducer';
 import MyButton from '../../UI/MyButton/MyButton';
 import s from './ModalCreatePost.module.css';
 
 const ModalCreatePost = (props) => {
   const [postTitle, setPostTitle] = useState('');
   const [isError, setIsError] = useState(false);
+  const fileInput = useRef();
 
   const handleChange = (e) => {
     setPostTitle(e.target.value);
   };
   const handleCreate = () => {
-    if (!postTitle) {
+    if (!postTitle || !fileInput.current.files.length) {
       setIsError(true);
     } else {
-      props.createPost(postTitle, props.username);
+      let formData = new FormData();
+      formData.append('picture', fileInput.current.files[0], "[PROXY]");
+      props.createPost(postTitle, props.username, formData);
       props.setIsCreatePostMode(false);
     }
   };
@@ -42,7 +45,8 @@ const ModalCreatePost = (props) => {
           autoFocus={true}
           required={true}
         />
-        {isError && <p className={s.error}>Title cannot be empty!</p>}
+        <input type="file" ref={fileInput} />
+        {isError && <p className={s.error}>Title and (or) image cannot be empty!</p>}
         <MyButton onClick={handleCreate}>Add post</MyButton>
         <MyButton onClick={handleCancel}>Cancel</MyButton>
       </form>
@@ -54,5 +58,5 @@ const mapStateToProps = (state) => ({
   username: state.auth.username,
 });
 
-export default connect(mapStateToProps, { createPost })(ModalCreatePost);
+export default connect(mapStateToProps, { createPost, uploadPostPicture })(ModalCreatePost);
 

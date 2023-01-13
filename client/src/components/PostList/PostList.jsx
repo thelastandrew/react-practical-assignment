@@ -14,6 +14,7 @@ const PostList = (props) => {
             date={post.date}
             title={post.title}
             username={post.username}
+            imageSrc={post.imageSrc}
             imgSrc={post.imgSrc}
             likes={post.likes}
             dislikes={post.dislikes}

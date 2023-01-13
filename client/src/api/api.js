@@ -22,4 +22,8 @@ export const postAPI = {
 
   updatePost: ( id, title, likes, dislikes) => API.put(`${endpoints.post}/${id}`, { title, likes, dislikes })
     .then(response => response.data),
+
+    uploadPostPicture: (id, formData) => API.post(`${endpoints.post}/${id}/picture`, formData)
+    .then(response => response.data),
+
 };

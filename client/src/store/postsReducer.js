@@ -9,6 +9,7 @@ const ADD_POST = 'ADD_POST';
 const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
 const REMOVE_POST = 'REMOVE_POST';
 const EDIT_POST = 'EDIT_POST';
+const ADD_POST_PICTURE = 'ADD_POST_PICTURE';
 
 const initialState = {
   posts: [],
@@ -43,10 +44,22 @@ const postsReducer = (state = initialState, action) => {
       return { ...state, errorMsg: action.payload };
     }
     case REMOVE_POST: {
-      return { ...state, posts: state.posts.filter(p => p.id !== action.payload ) };
+      return {
+        ...state,
+        posts: state.posts.filter((p) => p.id !== action.payload),
+      };
     }
     case EDIT_POST: {
-      const postToUpdate = state.posts.findIndex(p => p.id === action.payload.id);
+      const postToUpdate = state.posts.findIndex(
+        (p) => p.id === action.payload.id
+      );
+      state.posts.splice(postToUpdate, 1, action.payload);
+      return { ...state, posts: [...state.posts] };
+    }
+    case ADD_POST_PICTURE: {
+      const postToUpdate = state.posts.findIndex(
+        (p) => p.id === action.payload.id
+      );
       state.posts.splice(postToUpdate, 1, action.payload);
       return { ...state, posts: [...state.posts] };
     }
@@ -77,6 +90,10 @@ const setErrorMsg = (errorMsg) => ({
 });
 const removePost = (id) => ({ type: REMOVE_POST, payload: id });
 const editPost = (updatedPost) => ({ type: EDIT_POST, payload: updatedPost });
+const addPostPicture = (updatedPost) => ({
+  type: ADD_POST_PICTURE,
+  payload: updatedPost,
+});
 
 export const getPosts = (pageNum) => (dispatch) => {
   dispatch(toggleIsFetching(true));
@@ -94,10 +111,11 @@ export const getPosts = (pageNum) => (dispatch) => {
   });
 };
 
-export const createPost = (title, username) => (dispatch) => {
+export const createPost = (title, username, formData) => (dispatch) => {
   dispatch(toggleIsFetching(true));
   postAPI.createPost(title, username).then((data) => {
     if (data.success) {
+      dispatch(uploadPostPicture(data.result.id, formData));
       dispatch(addPost(data.result));
       dispatch(toggleIsFetching(false));
     } else {
@@ -108,7 +126,6 @@ export const createPost = (title, username) => (dispatch) => {
 };
 
 export const deletePost = (id) => (dispatch) => {
-  dispatch(toggleIsFetching(true));
   postAPI.deletePost(id).then((data) => {
     if (data.success) {
       dispatch(removePost(data.result.id));
@@ -121,16 +138,24 @@ export const deletePost = (id) => (dispatch) => {
 };
 
 export const updatePost = (id, title, likes, dislikes) => (dispatch) => {
-  dispatch(toggleIsFetching(true));
   postAPI.updatePost(id, title, likes, dislikes).then((data) => {
-    if(data.success) {
+    if (data.success) {
       dispatch(editPost(data.result));
-      dispatch(toggleIsFetching(false));
     } else {
       dispatch(setErrorMsg(data.result));
-      dispatch(toggleIsFetching(false));
+    }
+  });
+};
+
+export const uploadPostPicture = (id, formData) => (dispatch) => {
+  postAPI.uploadPostPicture(id, formData).then((data) => {
+    if (data.success) {
+      dispatch(addPostPicture(data.result));
+    } else {
+      dispatch(setErrorMsg(data.result));
     }
   });
 };
 
 export default postsReducer;
+
