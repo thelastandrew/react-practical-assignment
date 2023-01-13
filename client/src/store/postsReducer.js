@@ -1,10 +1,12 @@
-import { postAPI } from "../api/api";
+import { postAPI } from '../api/api';
 
 const SET_POSTS = 'SET_POSTS';
 const SET_PAGE = 'SET_PAGE';
 const SET_TOTAL_PAGES = 'SET_TOTAL_PAGES';
 const SET_TOTAL_POSTS = 'SET_TOTAL_POSTS';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
+const ADD_POST = 'ADD_POST';
+const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
 
 const initialState = {
   posts: [],
@@ -12,9 +14,10 @@ const initialState = {
   page: 1,
   totalPages: 0,
   isFetching: false,
+  errorMsg: '',
 };
 
-const postsReducer = (state = initialState, action ) => {
+const postsReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_POSTS: {
       return { ...state, posts: action.payload };
@@ -31,30 +34,65 @@ const postsReducer = (state = initialState, action ) => {
     case TOGGLE_IS_FETCHING: {
       return { ...state, isFetching: action.payload };
     }
+    case ADD_POST: {
+      return { ...state, posts: [...state.posts, action.payload] };
+    }
+    case SET_ERROR_MESSAGE: {
+      return { ...state, errorMsg: action.payload };
+    }
     default: {
       return state;
     }
   }
 };
 
-const setPosts = posts => ({ type: SET_POSTS, payload: posts });
-const setTotalPosts = totalPosts => ({ type: SET_TOTAL_POSTS, payload: totalPosts });
-const setPage = page => ({ type: SET_PAGE, payload: page });
-const setTotalPages = totalPages => ({ type: SET_TOTAL_PAGES, payload: totalPages });
-const toggleIsFetching = isFetching => ({ type: TOGGLE_IS_FETCHING, payload: isFetching });
+const setPosts = (posts) => ({ type: SET_POSTS, payload: posts });
+const setTotalPosts = (totalPosts) => ({
+  type: SET_TOTAL_POSTS,
+  payload: totalPosts,
+});
+const setPage = (page) => ({ type: SET_PAGE, payload: page });
+const setTotalPages = (totalPages) => ({
+  type: SET_TOTAL_PAGES,
+  payload: totalPages,
+});
+const toggleIsFetching = (isFetching) => ({
+  type: TOGGLE_IS_FETCHING,
+  payload: isFetching,
+});
+const addPost = (newPost) => ({ type: ADD_POST, payload: newPost });
+const setErrorMsg = (errorMsg) => ({
+  type: SET_ERROR_MESSAGE,
+  payload: errorMsg,
+});
 
-export const getPosts = pageNum => dispatch => {
+export const getPosts = (pageNum) => (dispatch) => {
   dispatch(toggleIsFetching(true));
-  postAPI.getPosts(pageNum)
-    .then(data => {
-      if (data.success) {
-        dispatch(setPosts(data.result));
-        dispatch(setTotalPosts(data.total));
-        dispatch(setPage(data.page));
-        dispatch(setTotalPages(data.totalPages));
-        dispatch(toggleIsFetching(false));
-      }
-    });
+  postAPI.getPosts(pageNum).then((data) => {
+    if (data.success) {
+      dispatch(setPosts(data.result));
+      dispatch(setTotalPosts(data.total));
+      dispatch(setPage(data.page));
+      dispatch(setTotalPages(data.totalPages));
+      dispatch(toggleIsFetching(false));
+    } else {
+      dispatch(setErrorMsg(data.result));
+      dispatch(toggleIsFetching(false));
+    }
+  });
+};
+
+export const createPost = (title, username) => (dispatch) => {
+  dispatch(toggleIsFetching(true));
+  postAPI.createPost(title, username).then((data) => {
+    if (data.success) {
+      dispatch(addPost(data.result));
+      dispatch(toggleIsFetching(false));
+    } else {
+      dispatch(setErrorMsg(data.result));
+      dispatch(toggleIsFetching(false));
+    }
+  });
 };
 
 export default postsReducer;

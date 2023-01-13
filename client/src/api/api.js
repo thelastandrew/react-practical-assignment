@@ -13,4 +13,7 @@ const API = axios.create({
 export const postAPI = {
   getPosts: (pageNum) => API.get(`${endpoints.post}/page/${pageNum}`)
     .then(response => response.data),
+
+  createPost: (title, username) => API.post(endpoints.post, { title, username })
+    .then(response => response.data),
 };

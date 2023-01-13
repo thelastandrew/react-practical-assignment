@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PrivateWrapper from './components/PrivateWrapper';
 import NavigateToMain from './components/NavigateToMain';
-import Main from './pages/Main';
+import Main from './pages/Main/Main';
 import About from './pages/About';
 import NotFound from './pages/NotFound';
 
