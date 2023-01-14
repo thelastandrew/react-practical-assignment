@@ -1,0 +1,16 @@
+.searchBar {
+  display: flex;
+  flex-direction: row;
+}
+
+.searchBar input {
+  font-size: 1.6rem;
+  padding: 0.2em 0.5em;
+  width: 100%;
+}
+
+@media (max-width: 859px) {
+  .searchBar {
+    margin-bottom: 2rem;
+  }
+}

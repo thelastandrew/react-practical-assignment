@@ -3,6 +3,9 @@ import axios from 'axios';
 const baseURL = 'http://localhost:8080';
 const endpoints = {
   post: '/post',
+  postPage: '/post/page',
+  searchPost: '/post/search',
+  picture: './picture',
   comment: '/comment',
 };
 
@@ -11,7 +14,7 @@ const API = axios.create({
 });
 
 export const postAPI = {
-  getPosts: (pageNum) => API.get(`${endpoints.post}/page/${pageNum}`)
+  getPosts: (pageNum) => API.get(`${endpoints.postPage}/${pageNum}`)
     .then(response => response.data),
 
   createPost: (title, username) => API.post(endpoints.post, { title, username })
@@ -23,7 +26,8 @@ export const postAPI = {
   updatePost: ( id, title, likes, dislikes) => API.put(`${endpoints.post}/${id}`, { title, likes, dislikes })
     .then(response => response.data),
 
-    uploadPostPicture: (id, formData) => API.post(`${endpoints.post}/${id}/picture`, formData)
+  uploadPostPicture: (id, formData) => API.post(`${endpoints.post}/${id}/picture`, formData)
     .then(response => response.data),
-
+  filterPosts: (keyword) => API.get(`${endpoints.searchPost}/${keyword}`)
+    .then(response => response.data),
 };

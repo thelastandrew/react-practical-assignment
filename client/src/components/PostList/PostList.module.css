@@ -1,7 +1,19 @@
 .postListGrid {
+  position: relative;
+  width: 100%;
+
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 2rem 2rem;
+}
+
+.blocked {
+  overflow: hidden;
+}
+
+.nothing {
+  font-size: 2rem;
+  text-align: center;
 }
 
 @media (max-width: 1279px) {

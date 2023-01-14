@@ -7,6 +7,7 @@ const SET_TOTAL_POSTS = 'SET_TOTAL_POSTS';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
 const ADD_POST_PICTURE = 'ADD_POST_PICTURE';
+const FILTER_POSTS = 'FILTER_POSTS';
 
 const initialState = {
   posts: [],
@@ -44,6 +45,9 @@ const postsReducer = (state = initialState, action) => {
       state.posts.splice(postToUpdate, 1, action.payload);
       return { ...state, posts: [...state.posts] };
     }
+    case FILTER_POSTS: {
+      return { ...state, posts: action.payload };
+    }
     default: {
       return state;
     }
@@ -72,6 +76,7 @@ const addPostPicture = (updatedPost) => ({
   type: ADD_POST_PICTURE,
   payload: updatedPost,
 });
+const filterPosts = (posts) => ({ type: FILTER_POSTS, payload: posts });
 
 export const getPosts = (pageNum) => (dispatch) => {
   dispatch(toggleIsFetching(true));
@@ -141,6 +146,19 @@ export const uploadPostPicture = (id, formData) => (dispatch) => {
     }
   });
 };
+
+export const searchPosts = (keyword) => (dispatch) => {
+  dispatch(toggleIsFetching(true));
+  postAPI.filterPosts(keyword).then((data) => {
+    if (data.success) {
+      dispatch(filterPosts(data.result));
+      dispatch(toggleIsFetching(false));
+    } else {
+      dispatch(setErrorMsg(data.result));
+      dispatch(toggleIsFetching(false));
+    }
+  });
+}
 
 export default postsReducer;
 
