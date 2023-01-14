@@ -1,9 +1,10 @@
 import Loader from '../Loader/Loader';
 import Post from '../Post/Post';
+import s from './PostList.module.css';
 
 const PostList = (props) => {
   return (
-    <>
+    <div className={props.isFetching ? s.loader : s.postListGrid}>
       {props.isFetching ? (
         <Loader />
       ) : (
@@ -21,7 +22,7 @@ const PostList = (props) => {
           />
         ))
       )}
-    </>
+    </div>
   );
 };
 

@@ -19,11 +19,9 @@ const Post = (props) => {
         <h2 className={s.postTitle}>{props.title}</h2>
         <p className={s.postAuthor}>by {props.username}</p>
       </div>
-      {props.imageSrc && (
         <img className={s.postPicture} src={props.imageSrc} alt="post pic" />
-      )}
       <div className={s.postFooter}>
-        <p className={s.postDate}>Posted on {postDate}</p>
+        <p className={s.postDate}>{postDate}</p>
         {props.username === props.currentUser && (
           <div className={s.authActions}>
             <MyButton onClick={() => setIsEditPostMode(true)}>Edit</MyButton>

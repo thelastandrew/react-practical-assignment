@@ -1,11 +1,12 @@
 .post {
   max-width: 700px;
-  margin: 0 auto;
-}
-
-.post:not(:last-child) {
+  margin: 0 auto 2em;
   border-bottom: 1px solid lightblue;
-  margin-bottom: 2em;
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .postHeader {

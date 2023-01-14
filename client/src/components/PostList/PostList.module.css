@@ -1,0 +1,23 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.postListGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem 2rem;
+}
+
+@media (max-width: 1279px) {
+  .postListGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 850px) {
+  .postListGrid {
+    display: block;
+  }
+}
