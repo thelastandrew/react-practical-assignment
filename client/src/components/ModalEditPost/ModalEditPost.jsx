@@ -5,7 +5,7 @@ import MyButton from '../../UI/MyButton/MyButton';
 import s from './ModalEditPost.module.css';
 
 const ModelEditPost = (props) => {
-  const [postTitle, setPostTitle] = useState(props.postValue);
+  const [postTitle, setPostTitle] = useState(props.title);
   const [isError, setIsError] = useState(false);
 
   const handleChange = (e) => {
@@ -15,7 +15,7 @@ const ModelEditPost = (props) => {
     if (!postTitle) {
       setIsError(true);
     } else {
-      props.updatePost(props.id, postTitle);
+      props.updatePost(props.id, postTitle, props.likes, props.dislikes, props.currentPage);
       props.setIsEditPostMode(false);
     }
   };
@@ -52,6 +52,7 @@ const ModelEditPost = (props) => {
 
 const mapStateToProps = (state) => ({
   username: state.auth.username,
+  currentPage: state.posts.page
 });
 
 export default connect(mapStateToProps, { updatePost })(ModelEditPost);

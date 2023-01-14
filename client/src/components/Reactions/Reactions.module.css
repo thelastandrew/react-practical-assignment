@@ -1,7 +1,7 @@
 .reaction {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .reaction:not(:last-child) {

@@ -18,7 +18,7 @@ const ModalCreatePost = (props) => {
     } else {
       let formData = new FormData();
       formData.append('picture', fileInput.current.files[0], "[PROXY]");
-      props.createPost(postTitle, props.username, formData);
+      props.createPost(postTitle, props.username, formData, props.currentPage);
       props.setIsCreatePostMode(false);
     }
   };
@@ -56,6 +56,7 @@ const ModalCreatePost = (props) => {
 
 const mapStateToProps = (state) => ({
   username: state.auth.username,
+  currentPage: state.posts.page
 });
 
 export default connect(mapStateToProps, { createPost, uploadPostPicture })(ModalCreatePost);

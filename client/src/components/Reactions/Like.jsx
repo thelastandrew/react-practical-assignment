@@ -3,7 +3,7 @@ import { updatePost } from '../../store/postsReducer';
 import { useState } from 'react';
 import s from './Reactions.module.css';
 
-const Like = ({ id, title, likes, dislikes, currentUser, updatePost }) => {
+const Like = ({ id, title, likes, dislikes, currentUser, currentPage, updatePost }) => {
   const [isLiked, setIsLiked] = useState(likes.includes(currentUser));
   const likesCount = likes.length;
   const color = isLiked ? 'red' : 'black';
@@ -11,11 +11,11 @@ const Like = ({ id, title, likes, dislikes, currentUser, updatePost }) => {
   const handleLike = () => {
     if (!isLiked) {
       likes.push(currentUser);
-      updatePost(id, title, likes, dislikes);
+      updatePost(id, title, likes, dislikes, currentPage);
       setIsLiked(true);
     } else {
       const newLikes = likes.filter((l) => l !== currentUser);
-      updatePost(id, title, newLikes, dislikes);
+      updatePost(id, title, newLikes, dislikes, currentPage);
       setIsLiked(false);
     }
   };
@@ -48,6 +48,7 @@ const Like = ({ id, title, likes, dislikes, currentUser, updatePost }) => {
 
 const mapStateTotProps = (state) => ({
   currentUser: state.auth.username,
+  currentPage: state.posts.page,
 });
 
 export default connect(mapStateTotProps, { updatePost })(Like);

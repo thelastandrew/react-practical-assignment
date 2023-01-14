@@ -3,7 +3,7 @@ import { updatePost } from '../../store/postsReducer';
 import { useState } from 'react';
 import s from './Reactions.module.css';
 
-const Dislike = ({ id, title, likes, dislikes, currentUser, updatePost }) => {
+const Dislike = ({ id, title, likes, dislikes, currentUser, currentPage, updatePost }) => {
   const [isDisliked, setIsDisliked] = useState(dislikes.includes(currentUser));
   const dislikesCount = dislikes.length;
   const color = isDisliked ? 'blue' : 'black';
@@ -11,11 +11,11 @@ const Dislike = ({ id, title, likes, dislikes, currentUser, updatePost }) => {
   const handleDislike = () => {
     if (!isDisliked) {
       dislikes.push(currentUser);
-      updatePost(id, title, likes, dislikes);
+      updatePost(id, title, likes, dislikes, currentPage);
       setIsDisliked(true);
     } else {
       const newDislikes = dislikes.filter((l) => l !== currentUser);
-      updatePost(id, title, likes, newDislikes);
+      updatePost(id, title, likes, newDislikes, currentPage);
       setIsDisliked(false);
     }
   };
@@ -47,6 +47,7 @@ const Dislike = ({ id, title, likes, dislikes, currentUser, updatePost }) => {
 
 const mapStateTotProps = (state) => ({
   currentUser: state.auth.username,
+  currentPage: state.posts.page,
 });
 
 export default connect(mapStateTotProps, { updatePost })(Dislike);

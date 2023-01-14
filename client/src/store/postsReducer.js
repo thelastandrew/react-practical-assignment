@@ -5,10 +5,7 @@ const SET_PAGE = 'SET_PAGE';
 const SET_TOTAL_PAGES = 'SET_TOTAL_PAGES';
 const SET_TOTAL_POSTS = 'SET_TOTAL_POSTS';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
-const ADD_POST = 'ADD_POST';
 const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
-const REMOVE_POST = 'REMOVE_POST';
-const EDIT_POST = 'EDIT_POST';
 const ADD_POST_PICTURE = 'ADD_POST_PICTURE';
 
 const initialState = {
@@ -16,7 +13,7 @@ const initialState = {
   totalPosts: 0,
   page: 1,
   totalPages: 0,
-  isFetching: true,
+  isFetching: false,
   errorMsg: '',
 };
 
@@ -37,24 +34,8 @@ const postsReducer = (state = initialState, action) => {
     case TOGGLE_IS_FETCHING: {
       return { ...state, isFetching: action.payload };
     }
-    case ADD_POST: {
-      return { ...state, posts: [...state.posts, action.payload] };
-    }
     case SET_ERROR_MESSAGE: {
       return { ...state, errorMsg: action.payload };
-    }
-    case REMOVE_POST: {
-      return {
-        ...state,
-        posts: state.posts.filter((p) => p.id !== action.payload),
-      };
-    }
-    case EDIT_POST: {
-      const postToUpdate = state.posts.findIndex(
-        (p) => p.id === action.payload.id
-      );
-      state.posts.splice(postToUpdate, 1, action.payload);
-      return { ...state, posts: [...state.posts] };
     }
     case ADD_POST_PICTURE: {
       const postToUpdate = state.posts.findIndex(
@@ -83,13 +64,10 @@ const toggleIsFetching = (isFetching) => ({
   type: TOGGLE_IS_FETCHING,
   payload: isFetching,
 });
-const addPost = (newPost) => ({ type: ADD_POST, payload: newPost });
 const setErrorMsg = (errorMsg) => ({
   type: SET_ERROR_MESSAGE,
   payload: errorMsg,
 });
-const removePost = (id) => ({ type: REMOVE_POST, payload: id });
-const editPost = (updatedPost) => ({ type: EDIT_POST, payload: updatedPost });
 const addPostPicture = (updatedPost) => ({
   type: ADD_POST_PICTURE,
   payload: updatedPost,
@@ -111,12 +89,12 @@ export const getPosts = (pageNum) => (dispatch) => {
   });
 };
 
-export const createPost = (title, username, formData) => (dispatch) => {
+export const createPost = (title, username, formData, currentPage) => (dispatch) => {
   dispatch(toggleIsFetching(true));
   postAPI.createPost(title, username).then((data) => {
     if (data.success) {
       dispatch(uploadPostPicture(data.result.id, formData));
-      dispatch(addPost(data.result));
+      dispatch(getPosts(currentPage));
       dispatch(toggleIsFetching(false));
     } else {
       dispatch(setErrorMsg(data.result));
@@ -125,10 +103,11 @@ export const createPost = (title, username, formData) => (dispatch) => {
   });
 };
 
-export const deletePost = (id) => (dispatch) => {
+export const deletePost = (id, currentPage) => (dispatch) => {
+  dispatch(toggleIsFetching(true));
   postAPI.deletePost(id).then((data) => {
     if (data.success) {
-      dispatch(removePost(data.result.id));
+      dispatch(getPosts(currentPage));
       dispatch(toggleIsFetching(false));
     } else {
       dispatch(setErrorMsg(data.result));
@@ -137,22 +116,28 @@ export const deletePost = (id) => (dispatch) => {
   });
 };
 
-export const updatePost = (id, title, likes, dislikes) => (dispatch) => {
+export const updatePost = (id, title, likes, dislikes, currentPage) => (dispatch) => {
+  dispatch(toggleIsFetching(true));
   postAPI.updatePost(id, title, likes, dislikes).then((data) => {
     if (data.success) {
-      dispatch(editPost(data.result));
+      dispatch(getPosts(currentPage));
+      dispatch(toggleIsFetching(false));
     } else {
       dispatch(setErrorMsg(data.result));
+      dispatch(toggleIsFetching(false));
     }
   });
 };
 
 export const uploadPostPicture = (id, formData) => (dispatch) => {
+  dispatch(toggleIsFetching(true));
   postAPI.uploadPostPicture(id, formData).then((data) => {
     if (data.success) {
       dispatch(addPostPicture(data.result));
+      dispatch(toggleIsFetching(false));
     } else {
       dispatch(setErrorMsg(data.result));
+      dispatch(toggleIsFetching(false));
     }
   });
 };

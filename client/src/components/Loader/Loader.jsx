@@ -3,7 +3,9 @@ import s from './Loader.module.css';
 
 const Loader = () => {
   return (
-    <img className={s.loader} src={loader} alt='loader-gif'/>
+    <div className={s.loader}>
+      <img className={s.loaderContent} src={loader} alt='loader-gif'/>
+    </div>
   );
 };
 

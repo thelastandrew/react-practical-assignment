@@ -25,7 +25,7 @@ const Post = (props) => {
         {props.username === props.currentUser && (
           <div className={s.authActions}>
             <MyButton onClick={() => setIsEditPostMode(true)}>Edit</MyButton>
-            <MyButton onClick={() => props.deletePost(props.id)}>
+            <MyButton onClick={() => props.deletePost(props.id, props.currentPage)}>
               Delete
             </MyButton>
           </div>
@@ -48,8 +48,10 @@ const Post = (props) => {
       {isEditPostMode && (
         <ModalEditPost
           setIsEditPostMode={setIsEditPostMode}
-          postValue={props.title}
           id={props.id}
+          title={props.title}
+          likes={props.likes}
+          dislikes={props.dislikes}
         />
       )}
     </div>
@@ -58,6 +60,7 @@ const Post = (props) => {
 
 const mapStateTotProps = (state) => ({
   currentUser: state.auth.username,
+  currentPage: state.posts.page,
 });
 
 export default connect(mapStateTotProps, { deletePost })(Post);
