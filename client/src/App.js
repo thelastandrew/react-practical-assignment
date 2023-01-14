@@ -5,7 +5,7 @@ import PrivateWrapper from './components/PrivateWrapper';
 import NavigateToMain from './components/NavigateToMain';
 import Main from './pages/Main/Main';
 import About from './pages/About';
-import NotFound from './pages/NotFound';
+import NotFound from './pages/NotFound/NotFound';
 
 function App(props) {
   const userName = localStorage.getItem('username') || '';
