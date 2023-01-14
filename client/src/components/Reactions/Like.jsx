@@ -1,31 +1,15 @@
-import { connect } from 'react-redux';
-import { updatePost } from '../../store/postsReducer';
-import { useState } from 'react';
 import s from './Reactions.module.css';
 
-const Like = ({ id, title, likes, dislikes, currentUser, currentPage, updatePost }) => {
-  const [isLiked, setIsLiked] = useState(likes.includes(currentUser));
-  const likesCount = likes.length;
-  const color = isLiked ? 'red' : 'black';
+const Like = (props) => {
 
-  const handleLike = () => {
-    if (!isLiked) {
-      likes.push(currentUser);
-      updatePost(id, title, likes, dislikes, currentPage);
-      setIsLiked(true);
-    } else {
-      const newLikes = likes.filter((l) => l !== currentUser);
-      updatePost(id, title, newLikes, dislikes, currentPage);
-      setIsLiked(false);
-    }
-  };
-
-  const likeList = likes.join('\n');
+  const likesCount = props.likes.length;
+  const color = props.isLiked ? 'red' : 'black';
+  const likeList = props.likes.join('\n');
 
   return (
     <div className={s.reaction} title={likeList}>
       {!!likesCount && <p className={s.reactionCounter}>{likesCount}</p>}
-      <button onClick={handleLike} className={s.reactionBtn}>
+      <button onClick={props.handleLike} className={s.reactionBtn}>
         <svg
           fill="none"
           height="24"
@@ -46,10 +30,5 @@ const Like = ({ id, title, likes, dislikes, currentUser, currentPage, updatePost
   );
 };
 
-const mapStateTotProps = (state) => ({
-  currentUser: state.auth.username,
-  currentPage: state.posts.page,
-});
-
-export default connect(mapStateTotProps, { updatePost })(Like);
+export default Like;
 

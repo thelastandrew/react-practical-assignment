@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { useState } from 'react';
-import { deletePost } from '../../store/postsReducer';
+import { deletePost, updatePost } from '../../store/postsReducer';
 import Like from '../Reactions/Like';
 import Dislike from '../Reactions/Dislike';
 import MyButton from '../../UI/MyButton/MyButton';
@@ -9,9 +9,37 @@ import s from './Post.module.css';
 
 const Post = (props) => {
   const [isEditPostMode, setIsEditPostMode] = useState(false);
+  const [isLiked, setIsLiked] = useState(props.likes.includes(props.currentUser));
+  const [isDisliked, setIsDisliked] = useState(props.dislikes.includes(props.currentUser));
 
   let postDate = new Date(Number(props.date)).toString();
   postDate = postDate.substring(0, postDate.length - 32);
+
+  const handleLike = () => {
+    if (!isLiked) {
+      props.likes.push(props.currentUser);
+      updatePost(props.id, props.title, props.likes, props.dislikes, props.currentPage);
+      setIsLiked(true);
+    } else {
+      const userToRemove = props.likes.indexOf(props.currentUser);
+      props.likes.splice(userToRemove, 1)
+      updatePost(props.id, props.title, props.likes, props.dislikes, props.currentPage);
+      setIsLiked(false);
+    }
+  };
+
+  const handleDislike = () => {
+    if (!isDisliked) {
+      props.dislikes.push(props.currentUser);
+      updatePost(props.id, props.title, props.likes, props.dislikes, props.currentPage);
+      setIsDisliked(true);
+    } else {
+      const userToRemove = props.dislikes.indexOf(props.currentUser);
+      props.dislikes.splice(userToRemove, 1)
+      updatePost(props.id, props.title, props.likes, props.dislikes, props.currentPage);
+      setIsDisliked(false);
+    }
+  }
 
   return (
     <div className={s.post}>
@@ -32,15 +60,13 @@ const Post = (props) => {
         )}
         <div className={s.postReactions}>
           <Like
-            id={props.id}
-            title={props.title}
+            isLiked={isLiked}
+            handleLike={handleLike}
             likes={props.likes}
-            dislikes={props.dislikes}
           />
           <Dislike
-            id={props.id}
-            title={props.title}
-            likes={props.likes}
+            isDisliked={isDisliked}
+            handleDislike={handleDislike}
             dislikes={props.dislikes}
           />
         </div>
@@ -63,5 +89,5 @@ const mapStateTotProps = (state) => ({
   currentPage: state.posts.page,
 });
 
-export default connect(mapStateTotProps, { deletePost })(Post);
+export default connect(mapStateTotProps, { deletePost, updatePost })(Post);
 

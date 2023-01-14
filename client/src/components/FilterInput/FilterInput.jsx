@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getPosts, searchPosts } from '../../store/postsReducer';
+import { getInitPosts, searchPosts } from '../../store/postsReducer';
 import s from './FilterInput.module.css';
 
 const FilterInput = (props) => {
@@ -12,7 +12,7 @@ const filter = (e) => {
   if (keyword) {
     props.searchPosts(keyword);
   } else {
-    props.getPosts(props.page);
+    props.getInitPosts(props.page);
   }
 };
 
@@ -30,4 +30,4 @@ const mapStateToProps = state => ({
   page: state.posts.page
 });
 
-export default connect(mapStateToProps, { getPosts, searchPosts })(FilterInput);
+export default connect(mapStateToProps, { getInitPosts, searchPosts })(FilterInput);

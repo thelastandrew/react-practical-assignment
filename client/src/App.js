@@ -4,7 +4,6 @@ import { login } from './store/authReducer';
 import PrivateWrapper from './components/PrivateWrapper';
 import NavigateToMain from './components/NavigateToMain';
 import Main from './pages/Main/Main';
-import About from './pages/About';
 import NotFound from './pages/NotFound/NotFound';
 
 function App(props) {
@@ -16,7 +15,6 @@ function App(props) {
         <Route path="/login" element={<NavigateToMain />} />
         <Route path="/" element={<PrivateWrapper />}>
           <Route index element={<Main />} />
-          <Route path="about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

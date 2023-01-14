@@ -1,31 +1,15 @@
-import { connect } from 'react-redux';
-import { updatePost } from '../../store/postsReducer';
-import { useState } from 'react';
 import s from './Reactions.module.css';
 
-const Dislike = ({ id, title, likes, dislikes, currentUser, currentPage, updatePost }) => {
-  const [isDisliked, setIsDisliked] = useState(dislikes.includes(currentUser));
-  const dislikesCount = dislikes.length;
-  const color = isDisliked ? 'blue' : 'black';
+const Dislike = (props) => {
 
-  const handleDislike = () => {
-    if (!isDisliked) {
-      dislikes.push(currentUser);
-      updatePost(id, title, likes, dislikes, currentPage);
-      setIsDisliked(true);
-    } else {
-      const newDislikes = dislikes.filter((l) => l !== currentUser);
-      updatePost(id, title, likes, newDislikes, currentPage);
-      setIsDisliked(false);
-    }
-  };
-
-  const dislikeList = dislikes.join('\n');
+  const dislikesCount = props.dislikes.length;
+  const color = props.isDisliked ? 'blue' : 'black';
+  const dislikeList = props.dislikes.join('\n');
 
   return (
     <div className={s.reaction} title={dislikeList}>
       {!!dislikesCount && <p className={s.reactionCounter}>{dislikesCount}</p>}
-      <button onClick={handleDislike} className={s.reactionBtn}>
+      <button onClick={props.handleDislike} className={s.reactionBtn}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24px"
@@ -45,10 +29,5 @@ const Dislike = ({ id, title, likes, dislikes, currentUser, currentPage, updateP
   );
 };
 
-const mapStateTotProps = (state) => ({
-  currentUser: state.auth.username,
-  currentPage: state.posts.page,
-});
-
-export default connect(mapStateTotProps, { updatePost })(Dislike);
+export default Dislike;
 

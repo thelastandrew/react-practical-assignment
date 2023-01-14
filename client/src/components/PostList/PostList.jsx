@@ -4,7 +4,7 @@ import s from './PostList.module.css';
 
 const PostList = (props) => {
   return (
-    <div className={`${props.posts.length ? s.postListGrid : ''} ${props.isFetching && s.blocked}`}>
+    <div className={`${props.posts.length ? s.postListGrid : ''} ${props.arePostsFetching && s.blocked}`}>
         {props.posts.length ? props.posts.map((post) => (
           <Post
             key={post.id}
@@ -18,7 +18,7 @@ const PostList = (props) => {
             dislikes={post.dislikes}
           />
         )) : <p className={s.nothing}>Nothing to show</p>}
-        {props.isFetching && <Loader />}
+        {props.arePostsFetching && <Loader />}
     </div>
   );
 };

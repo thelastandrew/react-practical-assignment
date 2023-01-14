@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { useState } from 'react';
-import { getPosts } from '../../store/postsReducer';
+import { getInitPosts } from '../../store/postsReducer';
 import s from './Pagination.module.css';
 import { useEffect } from 'react';
 
@@ -17,14 +17,14 @@ const Pagination = (props) => {
     const desiredPage = props.page - 1;
     if (desiredPage === 1) setIsPrevActive(false);
     if (props.page === props.totalPages) setIsNextActive(true);
-    props.getPosts(desiredPage);
+    props.getInitPosts(desiredPage);
   };
 
   const handleNext = () => {
     const desiredPage = props.page + 1;
     if (desiredPage === props.totalPages) setIsNextActive(false);
     if (props.page === 1) setIsPrevActive(true);
-    props.getPosts(desiredPage);
+    props.getInitPosts(desiredPage);
   };
 
   return (
@@ -47,4 +47,4 @@ const mapStateToProps = (state) => ({
   totalPages: state.posts.totalPages,
 });
 
-export default connect(mapStateToProps, { getPosts })(Pagination);
+export default connect(mapStateToProps, { getInitPosts })(Pagination);
