@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../store/authReducer';
 import MyButton from '../../UI/MyButton/MyButton';
+import logo from './logo.jpg';
 import s from './Nav.module.css';
 
 const Nav = (props) => {
@@ -12,14 +12,7 @@ const Nav = (props) => {
 
   return (
     <nav className={s.nav}>
-      <ul className={s.navLinks}>
-        <li>
-          <Link to="/">Main</Link>
-        </li>
-        <li>
-          <Link to="/about">About</Link>
-        </li>
-      </ul>
+      <img className={s.logo} src={logo} alt='logo' />
       <p className={s.username}>{props.username}</p>
       <MyButton onClick={handleClick}>LogOut</MyButton>
     </nav>

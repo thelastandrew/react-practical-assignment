@@ -5,17 +5,13 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem;
+  padding: 1rem;
   background-color: #B2EBF2;
 }
 
-.navLinks {
-  display: flex;
-  flex-direction: row;
-}
-
-.navLinks li:not(:last-child) {
-  margin-right: 2rem;
+.logo{
+  display: block;
+  height: 100%;
 }
 
 .username {
