@@ -1,0 +1,51 @@
+.commentBlock {
+  position: relative;
+}
+
+.expandBtn {
+  display: block;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  background-color: #B2EBF2;
+  font-size: 1.6rem;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  transition: 0.3s;
+}
+
+.expandBtn:hover {
+  background-color: #0097A7;
+}
+
+.addCommentControls {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1rem;
+}
+
+.addCommentControls input {
+  flex-grow: 1;
+  padding: 0.3em;
+  font-size: 0.8em;
+  margin-right: 1rem;
+}
+
+.commentList {
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+  transform: translateY(100%);
+  background-color: aliceblue;
+  padding: 0.5em;
+  font-size: 2rem;
+  width: 100%;
+  box-shadow: 0px 5px 14px -2px rgba(0,0,0,0.64);
+}
+
+.error {
+  color: red;
+  font-size: 0.7em;
+  text-align: center;
+}

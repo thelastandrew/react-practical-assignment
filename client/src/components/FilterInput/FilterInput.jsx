@@ -1,11 +1,9 @@
 import { connect } from 'react-redux';
 import { getInitPosts, searchPosts } from '../../store/postsReducer';
+import { debounce } from '../../utils/utils';
 import s from './FilterInput.module.css';
 
 const FilterInput = (props) => {
-const debounce = (fn, delay) => (...args) => {
-  setTimeout(() => { fn(...args) }, delay);
-};
 
 const filter = (e) => {
   const keyword = e.target.value;

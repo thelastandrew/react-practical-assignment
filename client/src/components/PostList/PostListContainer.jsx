@@ -6,7 +6,7 @@ const mapStateToProps = state => ({
   posts: state.posts.posts,
   page: state.posts.page,
   totalPages: state.posts.totalPages,
-  arePostsFetching: state.posts.arePostsFetching,
+  isFetching: state.posts.isFetching,
 });
 
 export default connect(mapStateToProps, { getInitPosts })(PostListAPIContainer);

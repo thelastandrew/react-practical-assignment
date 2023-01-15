@@ -1,9 +1,9 @@
-import { postAPI } from '../api/api';
+import { postAPI, commentsAPI } from '../api/api';
 
 const SET_POSTS = 'SET_POSTS';
 const SET_PAGE = 'SET_PAGE';
 const SET_TOTAL_PAGES = 'SET_TOTAL_PAGES';
-const TOGGLE_ARE_POSTS_FETCHING = 'TOGGLE_ARE_POSTS_FETCHING';
+const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
 const ADD_POST_PICTURE = 'ADD_POST_PICTURE';
 const FILTER_POSTS = 'FILTER_POSTS';
@@ -12,8 +12,7 @@ const initialState = {
   posts: [],
   page: 1,
   totalPages: 0,
-  arePostsFetching: false,
-  isPostFetching: false,
+  isFetching: false,
   errorMsg: '',
 };
 
@@ -28,8 +27,8 @@ const postsReducer = (state = initialState, action) => {
     case SET_TOTAL_PAGES: {
       return { ...state, totalPages: action.payload };
     }
-    case TOGGLE_ARE_POSTS_FETCHING: {
-      return { ...state, arePostsFetching: action.payload };
+    case TOGGLE_IS_FETCHING: {
+      return { ...state, isFetching: action.payload };
     }
     case SET_ERROR_MESSAGE: {
       return { ...state, errorMsg: action.payload };
@@ -56,7 +55,7 @@ const setTotalPages = (totalPages) => ({
   type: SET_TOTAL_PAGES,
   payload: totalPages,
 });
-const toggleArePostsFetching = (arePostsFetching) => ({ type: TOGGLE_ARE_POSTS_FETCHING, payload: arePostsFetching });
+const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, payload: isFetching });
 const setErrorMsg = (errorMsg) => ({
   type: SET_ERROR_MESSAGE,
   payload: errorMsg,
@@ -74,43 +73,43 @@ const getPostsMiddleware = (pageNum) => (dispatch) => {
 }
 
 export const getInitPosts = (pageNum) => (dispatch) => {
-  dispatch(toggleArePostsFetching(true));
+  dispatch(toggleIsFetching(true));
   postAPI.getPosts(pageNum).then((data) => {
     if (data.success) {
       dispatch(setPosts(data.result));
       dispatch(setPage(data.page));
       dispatch(setTotalPages(data.totalPages));
-      dispatch(toggleArePostsFetching(false));
+      dispatch(toggleIsFetching(false));
     } else {
       dispatch(setErrorMsg(data.result));
-      dispatch(toggleArePostsFetching(false));
+      dispatch(toggleIsFetching(false));
     }
   });
 };
 
 export const createPost = (title, username, formData, currentPage) => (dispatch) => {
-  dispatch(toggleArePostsFetching(true));
+  dispatch(toggleIsFetching(true));
   postAPI.createPost(title, username).then((data) => {
     if (data.success) {
       dispatch(uploadPostPicture(data.result.id, formData));
       dispatch(getInitPosts(currentPage));
-      dispatch(toggleArePostsFetching(false));
+      dispatch(toggleIsFetching(false));
     } else {
       dispatch(setErrorMsg(data.result));
-      dispatch(toggleArePostsFetching(false));
+      dispatch(toggleIsFetching(false));
     }
   });
 };
 
 export const deletePost = (id, currentPage) => (dispatch) => {
-  dispatch(toggleArePostsFetching(true));
+  dispatch(toggleIsFetching(true));
   postAPI.deletePost(id).then((data) => {
     if (data.success) {
       dispatch(getInitPosts(currentPage));
-      dispatch(toggleArePostsFetching(false));
+      dispatch(toggleIsFetching(false));
     } else {
       dispatch(setErrorMsg(data.result));
-      dispatch(toggleArePostsFetching(false));
+      dispatch(toggleIsFetching(false));
     }
   });
 };
@@ -136,14 +135,44 @@ export const uploadPostPicture = (id, formData) => (dispatch) => {
 };
 
 export const searchPosts = (keyword) => (dispatch) => {
-  dispatch(toggleArePostsFetching(true));
+  dispatch(toggleIsFetching(true));
   postAPI.filterPosts(keyword).then((data) => {
     if (data.success) {
       dispatch(filterPosts(data.result));
-      dispatch(toggleArePostsFetching(false));
+      dispatch(toggleIsFetching(false));
     } else {
       dispatch(setErrorMsg(data.result));
-      dispatch(toggleArePostsFetching(false));
+      dispatch(toggleIsFetching(false));
+    }
+  });
+};
+
+export const createComment = (text, postId, username, currentPage) => (dispatch) => {
+  commentsAPI.createComment(text, postId, username).then((data) => {
+    if (data.success) {
+      dispatch(getPostsMiddleware(currentPage));
+    } else {
+      dispatch(setErrorMsg(data.result));
+    }
+  });
+}
+
+export const updateComment = (id, text, likes, dislikes, currentPage) => (dispatch) => {
+  commentsAPI.updateComment(id, text, likes, dislikes).then((data) => {
+    if (data.success) {
+      dispatch(getPostsMiddleware(currentPage));
+    } else {
+      dispatch(setErrorMsg(data.result));
+    }
+  });
+};
+
+export const deleteComment = (id, currentPage) => (dispatch) => {
+  commentsAPI.deleteComment(id).then((data) => {
+    if (data.success) {
+      dispatch(getPostsMiddleware(currentPage));
+    } else {
+      dispatch(setErrorMsg(data.result));
     }
   });
 };

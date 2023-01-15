@@ -12,7 +12,7 @@ class PostListAPIContainer extends Component {
         posts={this.props.posts}
         page={this.props.page}
         totalPages={this.props.totalPages}
-        arePostsFetching={this.props.arePostsFetching}
+        isFetching={this.props.isFetching}
       />
     );
   }

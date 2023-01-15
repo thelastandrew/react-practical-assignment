@@ -28,6 +28,18 @@ export const postAPI = {
 
   uploadPostPicture: (id, formData) => API.post(`${endpoints.post}/${id}/picture`, formData)
     .then(response => response.data),
+
   filterPosts: (keyword) => API.get(`${endpoints.searchPost}/${keyword}`)
+    .then(response => response.data),
+};
+
+export const commentsAPI = {
+  createComment: (text, postId, username) => API.post(endpoints.comment, { text, postId, username })
+    .then(response => response.data),
+
+  updateComment: (id, text, likes, dislikes) => API.put(`${endpoints.comment}/${id}`, { text, likes, dislikes })
+    .then(response => response.data),
+
+  deleteComment: (id) => API.delete(`${endpoints.comment}/${id}`)
     .then(response => response.data),
 };

@@ -2,7 +2,6 @@
   position: relative;
   max-width: 700px;
   margin: 0 auto 2em;
-  border-bottom: 1px solid lightblue;
   width: 100%;
   align-self: stretch;
   display: flex;
@@ -39,6 +38,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1rem;
 }
 
 .postDate {
