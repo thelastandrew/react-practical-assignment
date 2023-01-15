@@ -15,7 +15,15 @@ const ModelEditPost = (props) => {
     if (!postTitle) {
       setIsError(true);
     } else {
-      props.updatePost(props.id, postTitle, props.likes, props.dislikes, props.currentPage);
+      props.updatePost(
+        props.id,
+        postTitle,
+        props.likes,
+        props.dislikes,
+        props.currentPage,
+        props.isFiltered,
+        props.keyword
+      );
       props.setIsEditPostMode(false);
     }
   };
@@ -52,7 +60,9 @@ const ModelEditPost = (props) => {
 
 const mapStateToProps = (state) => ({
   username: state.auth.username,
-  currentPage: state.posts.page
+  currentPage: state.posts.page,
+  isFiltered: state.posts.isFiltered,
+  keyword: state.posts.keyword,
 });
 
 export default connect(mapStateToProps, { updatePost })(ModelEditPost);

@@ -17,7 +17,7 @@ const CommentList = (props) => {
   const handleAddComment = () => {
     if (!!text) {
       setIsError(false);
-      props.createComment(text, props.postId, props.username, props.currentPage);
+      props.createComment(text, props.postId, props.username, props.currentPage, props.isFiltered, props.keyword);
       setText('');
     } else {
       setIsError(true);
@@ -55,4 +55,9 @@ const CommentList = (props) => {
   );
 };
 
-export default connect(null, { createComment })(CommentList);
+const mapStateToProps = (state) => ({
+  isFiltered: state.posts.isFiltered,
+  keyword: state.posts.keyword,
+});
+
+export default connect(mapStateToProps, { createComment })(CommentList);

@@ -26,7 +26,9 @@ const Comment = (props) => {
         props.title,
         props.likes,
         props.dislikes,
-        props.currentPage
+        props.currentPage,
+        props.isFiltered,
+        props.keyword
       );
       setIsLiked(true);
     } else {
@@ -37,7 +39,9 @@ const Comment = (props) => {
         props.title,
         props.likes,
         props.dislikes,
-        props.currentPage
+        props.currentPage,
+        props.isFiltered,
+        props.keyword
       );
       setIsLiked(false);
     }
@@ -51,7 +55,9 @@ const Comment = (props) => {
         props.title,
         props.likes,
         props.dislikes,
-        props.currentPage
+        props.currentPage,
+        props.isFiltered,
+        props.keyword
       );
       setIsDisliked(true);
     } else {
@@ -62,7 +68,9 @@ const Comment = (props) => {
         props.title,
         props.likes,
         props.dislikes,
-        props.currentPage
+        props.currentPage,
+        props.isFiltered,
+        props.keyword
       );
       setIsDisliked(false);
     }
@@ -77,7 +85,9 @@ const Comment = (props) => {
         commentText,
         props.likes,
         props.dislikes,
-        props.currentPage
+        props.currentPage,
+        props.isFiltered,
+        props.keyword
       );
     } else {
       setIsError(true);
@@ -116,7 +126,14 @@ const Comment = (props) => {
                 </MyButton>
               )}
               <MyButton
-                onClick={() => props.deleteComment(props.id, props.currentPage)}
+                onClick={() =>
+                  props.deleteComment(
+                    props.id,
+                    props.currentPage,
+                    props.isFiltered,
+                    props.keyword
+                  )
+                }
               >
                 Delete
               </MyButton>
@@ -140,11 +157,14 @@ const Comment = (props) => {
   );
 };
 
-const mapStateTotProps = (state) => ({
+const mapStateToProps = (state) => ({
   currentUser: state.auth.username,
   currentPage: state.posts.page,
+  isFiltered: state.posts.isFiltered,
+  keyword: state.posts.keyword,
 });
 
-export default connect(mapStateTotProps, { updateComment, deleteComment })(
+export default connect(mapStateToProps, { updateComment, deleteComment })(
   Comment
 );
+

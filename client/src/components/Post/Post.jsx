@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { useState } from 'react';
-import { deletePost, updatePost } from '../../store/postsReducer';
+import { deletePost, updatePost, searchPosts } from '../../store/postsReducer';
 import Like from '../Reactions/Like';
 import Dislike from '../Reactions/Dislike';
 import MyButton from '../../UI/MyButton/MyButton';
@@ -26,7 +26,9 @@ const Post = (props) => {
         props.title,
         props.likes,
         props.dislikes,
-        props.currentPage
+        props.currentPage,
+        props.isFiltered,
+        props.keyword
       );
       setIsLiked(true);
     } else {
@@ -37,7 +39,9 @@ const Post = (props) => {
         props.title,
         props.likes,
         props.dislikes,
-        props.currentPage
+        props.currentPage,
+        props.isFiltered,
+        props.keyword
       );
       setIsLiked(false);
     }
@@ -51,7 +55,9 @@ const Post = (props) => {
         props.title,
         props.likes,
         props.dislikes,
-        props.currentPage
+        props.currentPage,
+        props.isFiltered,
+        props.keyword
       );
       setIsDisliked(true);
     } else {
@@ -62,7 +68,9 @@ const Post = (props) => {
         props.title,
         props.likes,
         props.dislikes,
-        props.currentPage
+        props.currentPage,
+        props.isFiltered,
+        props.keyword
       );
       setIsDisliked(false);
     }
@@ -75,33 +83,39 @@ const Post = (props) => {
         <p className={s.postAuthor}>by {props.username}</p>
       </div>
       <img className={s.postPicture} src={props.imageSrc} alt="post pic" />
-      <div className={s.postFooter}>
-        <p className={s.postDate}>{dateToReadable(props.date)}</p>
-        {props.username === props.currentUser && (
-          <div className={s.authActions}>
-            <MyButton onClick={() => setIsEditPostMode(true)}>Edit</MyButton>
-            <MyButton
-              onClick={() => props.deletePost(props.id, props.currentPage)}
-            >
-              Delete
-            </MyButton>
+      <div>
+        <div className={s.postFooter}>
+          <p className={s.postDate}>{dateToReadable(props.date)}</p>
+          {props.username === props.currentUser && (
+            <div className={s.authActions}>
+              <MyButton onClick={() => setIsEditPostMode(true)}>Edit</MyButton>
+              <MyButton
+                onClick={() => props.deletePost(props.id, props.currentPage)}
+              >
+                Delete
+              </MyButton>
+            </div>
+          )}
+          <div className={s.postReactions}>
+            <Like
+              isLiked={isLiked}
+              handleLike={handleLike}
+              likes={props.likes}
+            />
+            <Dislike
+              isDisliked={isDisliked}
+              handleDislike={handleDislike}
+              dislikes={props.dislikes}
+            />
           </div>
-        )}
-        <div className={s.postReactions}>
-          <Like isLiked={isLiked} handleLike={handleLike} likes={props.likes} />
-          <Dislike
-            isDisliked={isDisliked}
-            handleDislike={handleDislike}
-            dislikes={props.dislikes}
-          />
         </div>
+        <CommentList
+          comments={props.comments}
+          postId={props.id}
+          username={props.currentUser}
+          currentPage={props.currentPage}
+        />
       </div>
-      <CommentList
-        comments={props.comments}
-        postId={props.id}
-        username={props.currentUser}
-        currentPage={props.currentPage}
-      />
       {isEditPostMode && (
         <ModalEditPost
           setIsEditPostMode={setIsEditPostMode}
@@ -115,10 +129,16 @@ const Post = (props) => {
   );
 };
 
-const mapStateTotProps = (state) => ({
+const mapStateToProps = (state) => ({
   currentUser: state.auth.username,
   currentPage: state.posts.page,
+  isFiltered: state.posts.isFiltered,
+  keyword: state.posts.keyword,
 });
 
-export default connect(mapStateTotProps, { deletePost, updatePost })(Post);
+export default connect(mapStateToProps, {
+  deletePost,
+  updatePost,
+  searchPosts,
+})(Post);
 
