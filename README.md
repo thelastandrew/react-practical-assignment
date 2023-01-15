@@ -1,230 +1,304 @@
-Structure:
-This project contains two application:
-- server app (inside of './server' folder)
-- client app (inside of './client' folder)
+## Structure:
+This project contains two applications:
+- server app (inside of a './server' folder)
+- client app (inside of a './client' folder)
 
-Task related to client app. So, everything what you have to do you will do it inside of './client' folder
+The task is related to the client app. So everything what you have to do you will do it inside of a './client' folder
 
-Steps:
+## Steps:
 1. Download and install node here - https://nodejs.org/en/ (if needed)
 2. Open project using VSC or some other code editor
-3. Run command in terminal (inside of this folder): npm run setup (it should install all dependencies)
-4. Run command in terminal (inside of this folder): npm run start_server (it should start server app)
-5. Open additional terminal and run command: npm run start_client (it should start client app)
+3. Run command in terminal (inside of this folder): `npm run setup` (it should install all dependencies)
+4. Run command in terminal (inside of this folder): `npm run start_server` (it should start server app)
+5. Open additional terminal and run command: `npm run start_client` (it should start client app)
 
-API
+##  API:
 Client app should use api provided by server app.
 Here is endpoints description:
 
-MAIN_URL = http://localhost:8080/
+### BASE_URL = http://localhost:8080
 
-CREATE POST:
-url: MAIN_URL + 'post/'
-method: post
-body: {
-    title: <string>,
-    username: <string>
-}
-response: {
-    id: <number>,
-    title: <string>,
-    username: <string>
-    likes: <Array<string>> //usernames
-    dislikes: <Array<string>> //usernames
-    imageSrc: <string> //path
-    date: <number>,
-    comments: <Array<Comment>>
-}
+### Create post:
+* url: `/post`
+* method: `'POST'` </br>
 
-UPDATE POST
-url: MAIN_URL + 'post/{id}'
-method: put
-body: {
-    title?: <string>,
-    likes?: Array<<string>>,
-    dislikes?: Array<<strings>>
+body:
+```typescript
+{
+    title: string,
+    username: string
 }
-response: {
-    id: <number>,
-    title: <string>,
-    username: <string>
-    likes: <Array<string>>
-    dislikes: <Array<string>>
-    date: <number>,
-    comments: <Array<Comment>>
+```
+response:
+```typescript
+success: boolean,
+result: {
+    id: number,
+    title: string,
+    username: string,
+    likes: string[], //usernames
+    dislikes: string[], //usernames
+    imageSrc: string, //path
+    date: number,
+    comments: Comment[]
 }
+```
+### Update post
+* url: `/post/:id`
+* method: `'PUT'` </br>
 
-FILTER/SEARCH POSTS BY KEYWORD
-url MAIN_URL + 'post/search/${keyWord}'
-method: get
-response: [
+body:
+ ```typescript
+ {
+    title?: string,
+    likes?: string[],
+    dislikes?: string[]
+}
+```
+response:
+```typescript
+success: boolean,
+result: {
+    id: number,
+    title: string,
+    username: string
+    likes: string[]
+    dislikes: string[]
+    date: number,
+    comments: Comment[]
+}
+```
+
+### Filter / search by keyword
+* url `/post/search/${keyWord}`
+* method: `'GET'` </br>
+
+response:
+```typescript
+success: boolean,
+result: [
     {
-        id: <number>,
-        title: <string>,
-        username: <string>
-        likes: <Array<string>> //usernames
-        dislikes: <Array<string>> //usernames
-        imageSrc: <string> //path
-        date: <number>,
-        comments: <Array<Comment>>
+        id: number,
+        title: string,
+        username: string
+        likes: string[] //usernames
+        dislikes: string[] //usernames
+        imageSrc: string //path
+        date: number,
+        comments: Comment[]
     }
     ...
 ]
+```
+### Get posts by pages (9 posts per page)
+* url `/post/page/${pageNumber}` // pageNumber > 0
+* method: `'GET'` </br>
 
-GET POSTS BY PAGES (9 posts per page)
-url MAIN_URL + 'post/page/${pageNumber}' // pageNumber > 0
-response: [
+response:
+```typescript
+success: boolean,
+result: [
     {
-        id: <number>,
-        title: <string>,
-        username: <string>
-        likes: <Array<string>> //usernames
-        dislikes: <Array<string>> //usernames
-        imageSrc: <string> //path
-        date: <number>,
-        comments: <Array<Comment>>
+        id: number,
+        title: string,
+        username: string
+        likes: string[] //usernames
+        dislikes: string[] //usernames
+        imageSrc: string //path
+        date: number,
+        comments: Comment[]
     }
     ...
 ]
-+ response contains additional information: totalPages, total and page
+total: number,
+page:number,
+totalPages: number
+```
+### Delete post
+* url: `/post/:id`
+* method: `'DELETE'` </br>
 
-DELETE POST
-url: MAIN_URL + 'post/{id}'
-method: delete
-response: {
-    id: <number>,
-    title: <string>,
-    username: <string>
-    likes: <Array<string>> //usernames
-    dislikes: <Array<string>> //usernames
-    imageSrc: <string> //path
-    date: <number>,
-    comments: <Array<Comment>>
+response:
+```typescript
+success: boolean,
+result: {
+    id: number,
+    title: string,
+    username: string
+    likes: string[], //usernames
+    dislikes: string[], //usernames
+    imageSrc: string, //path
+    date: number,
+    comments: Comment[]
 }
+```
 
-UPLOAD POST PICTURE
-url: MAIN_URL + 'post/{id}/picture'
-method: post
-body: FormData // should contain file like this formData.append("picture", file);
-response: {
-    id: <number>,
-    title: <string>,
-    username: <string>
-    likes: <Array<string>> //usernames
-    dislikes: <Array<string>> //usernames
-    imageSrc: <string> //path
-    date: <number>,
-    comments: <Array<Comment>>
+### Upload post picture
+* url: `/post/:id/picture`
+* method: `'POST'` </br>
+
+body:
+```javascript
+FormData // should contain file like this formData.append("picture", file);
+```
+response:
+```typescript
+success: boolean,
+result: {
+    id: number,
+    title: string,
+    username: string
+    likes: string[], //usernames
+    dislikes: string[], //usernames
+    imageSrc: string, //path
+    date: number,
+    comments: Comment[]
 }
+```
 
-CREATE COMMENT
-url: MAIN_URL + 'comment'
-method: post
-body: {
-    text: <string>,
-    postId: <number>,
-    username: <string>,
+### Create comment
+* url: `/comment`
+* method: `'POST'` </br>
+
+body:
+```typescript
+{
+    text: string,
+    postId: number,
+    username: string,
 }
-response: {
-    id: <number>,
-    text: <string>,
-    postId: <number>,
-    username: <string>,
-    likes: <Array<strings>>,
-    dislikes: <Array<strings>>,
-    date: <number>
+```
+response:
+```typescript
+success: boolean,
+result: {
+    id: number,
+    text: string,
+    postId: number,
+    username: string,
+    likes: string[], //usernames
+    dislikes: string[], //usernames
+    date: number
 }
+```
+### Update comment
+* url: `/comment/{id}`
+* method: `'PUT'` </br>
 
-UPDATE COMMENT
-url: MAIN_URL + 'comment/{id}'
-method: put
-body: {
-    text: <string>,
-    likes: <Array<strings>>,
-    dislikes: <Array<strings>>,
+body:
+```typescript
+{
+    text: string,
+    likes: string[],
+    dislikes: string[],
 }
-response: {
-    id: <number>,
-    text: <string>,
-    postId: <number>,
-    username: <string>,
-    likes: <Array<strings>>,
-    dislikes: <Array<strings>>,
-    date: <number>
+```
+response:
+```typescript
+success: boolean,
+result: {
+    id: number,
+    text: string,
+    postId: number,
+    username: string,
+    likes: string[], //usernames
+    dislikes: string[], //usernames
+    date: number
 }
+```
+### Delete comment
+* url: `/comment/:id`
+* method: `'DELETE'`
 
-DELETE COMMENT
-url: MAIN_URL + 'comment/{id}'
-method: delete
-response: {
-    id: <number>,
-    text: <string>,
-    postId: <number>,
-    username: <string>,
-    likes: <Array<strings>>,
-    dislikes: <Array<strings>>,
-    date: <number>
+response:
+```typescript
+success: boolean,
+result: {
+    id: number,
+    text: string,
+    postId: number,
+    username: string,
+    likes: string[], //usernames
+    dislikes: string[], //usernames
+    date: number
 }
+```
+----
+## Additional (rarely used)
 
+### Get all posts
+* url: `/post`
+* method: `'GET'`
 
-=============== i hope next endpoints will shouldn't be used, but i'll left it here, just in case ====================
-
-GET ALL POSTS
-url: MAIN_URL + 'post'
-method: get
-response: [
+response:
+```typescript
+success: boolean,
+result: [
     {
-        id: <number>,
-        title: <string>,
-        username: <string>
-        likes: <Array<string>> //usernames
-        dislikes: <Array<string>> //usernames
-        imageSrc: <string> //path
-        date: <number>,
-        comments: <Array<Comment>>
+        id: number,
+        title: string,
+        username: string
+        likes: string[], //usernames
+        dislikes: string[], //usernames
+        imageSrc: string //path
+        date: number,
+        comments: Comment[]
     }
     ...
 ]
+```
+### Get post
+* url: `/post/:id`
+* method: `'GET'`
 
-GET POST
-url: MAIN_URL + 'post/{id}'
-method: get
-response: {
-    id: <number>,
-    title: <string>,
-    username: <string>
-    likes: <Array<string>> //usernames
-    dislikes: <Array<string>> //usernames
-    imageSrc: <string> //path
-    date: <number>,
-    comments: <Array<Comment>>
+response:
+```typescript
+success: boolean,
+result: {
+    id: number,
+    title: string,
+    username: string
+    likes: string[], //usernames
+    dislikes: string[], //usernames
+    imageSrc: string //path
+    date: number,
+    comments: Comment[]
 }
+```
+### Get comment
+* url: `/comment/:id`
+* method: `'GET'`
 
-GET COMMENT
-url: MAIN_URL + 'comment/{id}'
-method: get
-response: {
-    id: <number>,
-    text: <string>,
-    postId: <number>,
-    username: <string>,
-    likes: <Array<strings>>,
-    dislikes: <Array<strings>>,
-    date: <number>
+response:
+```typescript
+success: boolean,
+result: {
+    id: number,
+    text: string,
+    postId: number,
+    username: string,
+    likes: string[], //usernames
+    dislikes: string[], //usernames
+    date: number
 }
+```
+### Get all comments
+* url: `/comment`
+* method: `/GET`
 
-GET COMMENTS
-url: MAIN_URL + 'comment'
-method: get
-response: [
+response:
+```typescript
+success: boolean,
+result: [
     {
-        id: <number>,
-        text: <string>,
-        postId: <number>,
-        username: <string>,
-        likes: <Array<strings>>,
-        dislikes: <Array<strings>>,
-        date: <number>
+        id: number,
+        text: string,
+        postId: number,
+        username: string,
+        likes: string[], //usernames
+        dislikes: string[], //usernames
+        date: number
     },
     ...
 ]
+```
